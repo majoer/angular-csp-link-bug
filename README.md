@@ -1,27 +1,33 @@
-# AngularCspLinkBug
+# Angular Universal CSP link bug reproduction.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.5.
+## How to reproduce
 
-## Development server
+1. Create a new angular project:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+ng new
+```
 
-## Code scaffolding
+2. Add nonce to app-root as explained here: https://angular.io/guide/security#content-security-policy<br/>
+   We use a dummy value for nonce just for testing, for example:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```html
+<!-- src/index.html -->
+<app-root ngCspNonce="123"></app-root>
+```
 
-## Build
+3. Add a stylesheet link to head, for example:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```html
+<!-- src/index.html -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+```
 
-## Running unit tests
+4. Build and see error message
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm run build
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Index html generation failed.
+# link.prev?.setAttribute is not a function
+```
